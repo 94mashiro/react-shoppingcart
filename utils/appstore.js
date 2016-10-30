@@ -19,21 +19,17 @@ function fetchAppInfo(url) {
 
           itemProps.each((index, item) => {
             const type = $(item).prop('itemprop')
-            console.log(type);
             switch (type) {
               case 'name':
                 const name = $(item).text()
-                console.log(name);
                 info[type].push(name)
                 break
               case 'image':
                 const src = $(item).prop('content')
-                console.log(src);
                 info['icon'] = src
                 break
               case 'price':
                 const price = $(item).text()
-                console.log(price);
                 info[type] = price
                 break
               default:

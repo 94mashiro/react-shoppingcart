@@ -2,6 +2,8 @@ import schedule from 'node-schedule'
 import db from '../db'
 import Sequelize from 'sequelize'
 import appstore from '../utils/appstore'
+import * as Hook from './hook'
+import request from 'superagent'
 
 const App = db.define('app', {
   id: {
@@ -59,10 +61,10 @@ function list() {
 }
 
 function edit(id, info) {
-  return new promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     App.update(info, {
       where: {
-        id
+        id: id
       }
     })
     .then(app => resolve(app))
@@ -77,12 +79,12 @@ function check() {
     list().then(apps => apps.map((app, index) => {
       appstore.fetchAppInfo(app.url)
         .then(info => {
-          console.log('Fetched', info.name)
           count ++
           console.log(count, apps.length)
           if (count === apps.length) {
             resolve()
           }
+          console.log(info.price,"  ",app.price);
           if (info.price !== app.price) {
             console.log(info.name, '\'s price had changed')
             let newPrice = info.price.substr(1)
@@ -92,16 +94,49 @@ function check() {
             if (isNaN(newPrice)) {
               status = 2 // free
             } else {
-              status = newPrice < numOriginPrice ? 1 : 0
+              if (newPrice < originPrice) {
+                status = 1
+              }
             }
+            console.log('status', status);
             edit(app.id, {
-              status,
+              status: status,
               price: info.price
             })
-            .catch(err => reject(err))
+            let sendInfo = {
+                name: info.name,
+                status: status,
+                oldPrice: originPrice,
+                newPrice: newPrice,
+            }
+            sendMessgae(sendInfo)
           }
         })
     }))
+  })
+}
+
+function sendMessgae(info) {
+  return new Promise((resolve, reject) => {
+    Hook.getUrl()
+      .then(url => {
+        request
+          .post(url)
+          .send({
+            name: info.name[0],
+            status: info.status,
+            oldPrice: info.oldPrice,
+            newPrice: info.newPrice || 0
+          })
+          .end(function(err, res){
+            if (err) {
+              reject(err)
+            } else {
+              resolve()
+            }
+          })
+      })
+      .catch(err => reject(err))
   })
 }
 

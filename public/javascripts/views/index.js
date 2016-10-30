@@ -8,7 +8,8 @@ class Index extends Component {
     this.state = {
       apps: [],
       adding: false,
-      appUrl: ''
+      appUrl: '',
+      hookUrl: ''
     }
     request
       .get('/api/app')
@@ -41,8 +42,24 @@ class Index extends Component {
       })
   }
 
+  addHook() {
+    console.log(this.state.hookUrl);
+    request
+      .post('./api/sethook')
+      .send({
+        url: this.state.hookUrl
+      })
+      .end((err, res) => {
+        console.log('ok');
+      })
+  }
+
   handleUrlChange(e) {
     this.state.appUrl = e.target.value
+  }
+
+  handleHookUrlChange(e) {
+    this.state.hookUrl = e.target.value
   }
 
   render() {
@@ -58,7 +75,9 @@ class Index extends Component {
     return (
       <div>
         <input type="text" onChange={this.handleUrlChange.bind(this)}/>
-        <button onClick={this.add.bind(this)}>addit</button>
+        <button onClick={this.add.bind(this)}>addit1</button>
+        <input type="text" placeholder="webhook" onChange={this.handleHookUrlChange.bind(this)}/>
+        <button onClick={this.addHook.bind(this)}>addHook1</button>
         {appItems}
       </div>
     );
