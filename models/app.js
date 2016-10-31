@@ -120,21 +120,23 @@ function sendMessgae(info) {
   return new Promise((resolve, reject) => {
     Hook.getUrl()
       .then(url => {
-        request
-          .post(url)
-          .send({
-            name: info.name[0],
-            status: info.status,
-            oldPrice: info.oldPrice,
-            newPrice: info.newPrice || 0
-          })
-          .end(function(err, res){
-            if (err) {
-              reject(err)
-            } else {
-              resolve()
-            }
-          })
+        if (url != '') {
+          request
+            .post(url)
+            .send({
+              name: info.name[0],
+              status: info.status,
+              oldPrice: info.oldPrice,
+              newPrice: info.newPrice || 0
+            })
+            .end(function(err, res){
+              if (err) {
+                reject(err)
+              } else {
+                resolve()
+              }
+            })
+        }
       })
       .catch(err => reject(err))
   })

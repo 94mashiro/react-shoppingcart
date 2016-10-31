@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import request from 'superagent'
+import nprogress from 'nprogress'
+import notie from 'notie'
 import Item from './item'
+
 
 class Index extends Component {
   constructor(props) {
     super(props)
+    nprogress.start()
     this.state = {
       apps: [],
       adding: false,
@@ -32,6 +36,7 @@ class Index extends Component {
         url: this.state.appUrl
       })
       .end((err,res) => {
+        nprogress.done()
         const oldState = this.state
         console.log('res.body', res.body);
         oldState.apps.push(res.body)
@@ -39,6 +44,7 @@ class Index extends Component {
           Object.assign({}, oldState)
         )
         console.log('after state',this.state);
+        notie.alert(1,"添加成功",1)
       })
   }
 
@@ -50,7 +56,7 @@ class Index extends Component {
         url: this.state.hookUrl
       })
       .end((err, res) => {
-        console.log('ok');
+        notie.alert(1,"设置成功",1)
       })
   }
 
@@ -74,12 +80,41 @@ class Index extends Component {
     }
     return (
       <div>
-        <input type="text" onChange={this.handleUrlChange.bind(this)}/>
-        <button onClick={this.add.bind(this)}>addit1</button>
-        <input type="text" placeholder="webhook" onChange={this.handleHookUrlChange.bind(this)}/>
-        <button onClick={this.addHook.bind(this)}>addHook1</button>
-        {appItems}
+        <div className="form-horizontal">
+          <div className="form-group">
+            <div className="row">
+              <div className="col-sm-8 col-sm-offset-2">
+                <div className="col-sm-9">
+                  <input type="text" className="form-control" placeholder="" onChange={this.handleUrlChange.bind(this)}/>
+                </div>
+                <div className="col-sm-3">
+                  <button className="btn btn-default form-control" onClick={this.add.bind(this)}>添加应用</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="row">
+              <div className="col-sm-8 col-sm-offset-2">
+                <div className="col-sm-9">
+                  <input type="text" className="form-control" placeholder="" onChange={this.handleHookUrlChange.bind(this)}/>
+                </div>
+                <div className="col-sm-3">
+                  <button className="btn btn-default form-control" onClick={this.addHook.bind(this)}>设置钩子</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <div className="list-group">
+              {appItems}
+            </div>
+          </div>
+        </div>
       </div>
+
     );
   }
 }

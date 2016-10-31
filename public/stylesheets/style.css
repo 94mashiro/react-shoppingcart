@@ -1,8 +1,30 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #456;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.img-circle {
+  border-radius: 10%;
+}
+
+.title {
+  font-size: 26px;
+  font-weight:600;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-weight: 200;
+  font-family: 'Merriweather';
 }
