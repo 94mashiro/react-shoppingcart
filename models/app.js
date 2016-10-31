@@ -84,19 +84,19 @@ function check() {
           if (count === apps.length) {
             resolve()
           }
-          console.log(info.price,"  ",app.price);
+          console.log('new price:',info.price," origin price:",app.price);
           if (info.price !== app.price) {
             console.log(info.name, '\'s price had changed')
-            let newPrice = info.price.substr(1)
-            let originPrice = app.price.substr(1)
+            let newPrice = parseFloat(info.price.substr(1))
+            let originPrice = parseFloat(app.price.substr(1))
+
+            console.log('newPrice:',newPrice,'  originPrice:',originPrice);
 
             let status = 0
             if (isNaN(newPrice)) {
               status = 2 // free
-            } else {
-              if (newPrice < originPrice) {
-                status = 1
-              }
+            } else if (newPrice < originPrice) {
+              status = 1
             }
             console.log('status', status);
             edit(app.id, {
