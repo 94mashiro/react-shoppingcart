@@ -2,3 +2,7 @@ node_modules
 _*
 build
 *.log
+
+api/venv/*
+api/wee.db
+api/*.pyc
