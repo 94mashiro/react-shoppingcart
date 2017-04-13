@@ -1,12 +1,15 @@
 import peewee
 
-database = peewee.SqliteDatabase("wee.db")
+database = peewee.SqliteDatabase("cart.db")
 
 class App(peewee.Model):  
     name = peewee.CharField()
     author = peewee.CharField()
     icon = peewee.CharField()
     url = peewee.CharField()
+    status = peewee.IntegerField()
+    max_price = peewee.IntegerField()
+    min_price = peewee.IntegerField()
 
     class Meta:
         database = database

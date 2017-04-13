@@ -18,7 +18,8 @@ class InputBar extends Component {
     fetchAppInfo(this.state.url)
       .then(info => {
         const status = info.status
-        if (status) {
+        if (status != -1) {
+          console.log(info)
           this.props.addApp(info)
         } else {
           console.log(info.message)
