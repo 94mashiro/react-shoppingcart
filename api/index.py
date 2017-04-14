@@ -9,6 +9,7 @@ import peewee
 from create_db import App, Price
 import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+from playhouse.shortcuts import model_to_dict, dict_to_model
 import logging
 
 app = Flask(__name__)
@@ -101,7 +102,7 @@ def listAll():
 def getDetailPrice(id):
   lists = []
   app = App.select().where(App.id == id).get()
-  for list in Price.select().where(Price.app == app).limit(10):
+  for list in Price.select().where(Price.app == app).limit(20):
     info = {}
     info['date'] = list.date.strftime('%b-%d-%y %H:%M:%S')
     info['price'] = list.price
@@ -131,6 +132,12 @@ def combineOldPrice(app):
   if oldPrice < price:
     status = 2
   App.update(max_price = maxPrice, min_price = minPrice, status = status).where(App.id == app.id).execute()
+
+@app.route('/detail/<id>')
+def getAppInfo(id):
+  app = App.select().where(App.id == id).get()
+  return json.dumps(model_to_dict(app))
+
 
 @app.route('/test')
 def test():

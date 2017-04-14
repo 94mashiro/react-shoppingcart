@@ -1,24 +1,66 @@
 import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react'
 import { connect } from 'react-redux'
+import { fetchAppPrice, parseAppInfo  } from '../utils/api'
 
 class Detail extends Component {
 
   constructor() {
     super()
+    this.state = {
+      name:'',
+      priceObj: {
+        price: [],
+        date: []
+      }
+    }
   }
   
   componentWillMount() {
-    console.log(this.props.info.priceObj)
+    const id = this.props.params.id
+    this.parseAppInfo(id)
+    this.parseAppPrice(id)
   }
 
   componentDidMount() {
   }
 
+  parseAppPrice(id) {
+    let price = []
+    let date = []
+    fetchAppPrice(id)
+      .then(lists => {
+        for (var i in lists) {
+          date.push(lists[i].date)
+          price.push(lists[i].price)
+        }
+        this.setState({
+          ...this.state,
+          priceObj: {
+            date,
+            price
+          }
+        })
+        this.forceUpdate()
+      })
+  }
+
+  parseAppInfo(id) {
+    parseAppInfo(id)
+      .then(info => {
+        this.setState({
+          ...this.state,
+          name: info.name
+        })
+        this.forceUpdate()
+      })
+      .catch(err => console.log(err))
+  }
+
   getOption() {
     const option = {
     title: {
-        text: this.props.info.name
+        text: this.state.name
     },
     tooltip: {
         trigger: 'axis'
@@ -31,7 +73,7 @@ class Detail extends Component {
     },
     xAxis: {
         type: 'category',
-        data: this.props.info.priceObj.date
+        data: this.state.priceObj.date
     },
     yAxis: {
         type: 'value'
@@ -41,7 +83,7 @@ class Detail extends Component {
             name:'价格',
             type:'line',
             step: 'end',
-            data: this.props.info.priceObj.price
+            data: this.state.priceObj.price
         }
     ]
   }

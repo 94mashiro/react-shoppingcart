@@ -64,3 +64,11 @@ export function fetchAppPrice(id) {
     .catch(err => reject(err))
   })
 }
+
+export function parseAppInfo(id) {
+  return new Promise((resolve, reject) => {
+    fetch(`http://localhost:5000/detail/${id}`)
+    .then(response => resolve(response.json()))
+    .catch(err => reject(err))
+  })
+}
