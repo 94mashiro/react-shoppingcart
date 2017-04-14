@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {fetchAppInfo} from './utils/api'
 import { Row, Col, Layout, Menu, Icon, Breadcrumb  } from 'antd'
+import { browserHistory } from 'react-router'
 import Index from './containers/index'
 const { SubMenu } = Menu
 const { Header, Content, Footer, Sider } = Layout
@@ -27,7 +28,13 @@ class App extends Component {
   }
 
   handleClickMenu(e){
-    console.log(e.key)
+    switch (e.key) {
+      case "1":
+        browserHistory.push('/')
+        break;
+      default:
+        break;
+    }
   }
 
   render() {

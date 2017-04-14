@@ -90,6 +90,9 @@ def listAll():
     info['author'] = app.author
     info['icon'] = app.icon
     info['url'] = app.url
+    info['max_price'] = app.max_price
+    info['min_price'] = app.min_price
+    info['status'] = app.status
     info['price'] = Price.select().where(Price.app == app).order_by(Price.date.desc()).get().price
     lists.append(info)
   return json.dumps(lists)
@@ -98,7 +101,7 @@ def listAll():
 def getDetailPrice(id):
   lists = []
   app = App.select().where(App.id == id).get()
-  for list in Price.select().where(Price.app == app):
+  for list in Price.select().where(Price.app == app).limit(10):
     info = {}
     info['date'] = list.date.strftime('%b-%d-%y %H:%M:%S')
     info['price'] = list.price
@@ -137,7 +140,7 @@ def test():
 
 def cron():
   scheduler = BackgroundScheduler()
-  scheduler.add_job(fetchAllApps, 'interval', seconds=15)
+  scheduler.add_job(fetchAllApps, 'interval', minutes=30)
   scheduler.start()
   print "[*] scheduler start, every 6 hours"
 

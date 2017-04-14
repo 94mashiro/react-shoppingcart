@@ -56,3 +56,11 @@ export function fetchAppList() {
     .catch(err => reject(err))
   })
 }
+
+export function fetchAppPrice(id) {
+  return new Promise((resolve, reject) => {
+    fetch(`http://localhost:5000/price/${id}`)
+    .then(response => resolve(response.json()))
+    .catch(err => reject(err))
+  })
+}

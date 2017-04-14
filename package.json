@@ -5,6 +5,8 @@
   "dependencies": {
     "antd": "^2.9.1",
     "cheerio": "^0.22.0",
+    "echarts": "^3.5.2",
+    "echarts-for-react": "^1.2.0",
     "mysql": "^2.13.0",
     "node-schedule": "^1.2.1",
     "react": "^15.5.3",
