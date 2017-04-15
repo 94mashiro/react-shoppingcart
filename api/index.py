@@ -11,10 +11,13 @@ import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from playhouse.shortcuts import model_to_dict, dict_to_model
 import logging
+from flask_cache import Cache
+
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-database = peewee.SqliteDatabase("wee.db")
+database = peewee.SqliteDatabase("cart.db")
+cache = Cache(app,config={'CACHE_TYPE': 'null'})
 
 log = logging.getLogger('apscheduler.executors.default')
 log.setLevel(logging.INFO)  # DEBUG
@@ -102,7 +105,7 @@ def listAll():
 def getDetailPrice(id):
   lists = []
   app = App.select().where(App.id == id).get()
-  for list in Price.select().where(Price.app == app).limit(20):
+  for list in Price.select().where(Price.app == app):
     info = {}
     info['date'] = list.date.strftime('%b-%d-%y %H:%M:%S')
     info['price'] = list.price
@@ -153,4 +156,5 @@ def cron():
 
 if __name__ == "__main__":
   cron()
+  cache.init_app(app)
   app.run()

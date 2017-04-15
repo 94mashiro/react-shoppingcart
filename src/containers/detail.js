@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react'
 import { connect } from 'react-redux'
 import { fetchAppPrice, parseAppInfo  } from '../utils/api'
+import { Table } from 'antd';
 
 class Detail extends Component {
 
@@ -34,12 +35,17 @@ class Detail extends Component {
           date.push(lists[i].date)
           price.push(lists[i].price)
         }
+        lists.forEach((item,index,input) => {
+          input[index]['key'] = index+1
+        })
+        console.log(lists)
         this.setState({
           ...this.state,
           priceObj: {
             date,
             price
-          }
+          },
+          lists
         })
         this.forceUpdate()
       })
@@ -91,10 +97,18 @@ class Detail extends Component {
   }
 
   render() {
+    const columns = [{
+      title: "Date",
+      dataIndex: 'date'
+    },{
+      title: "Price",
+      dataIndex: 'price'
+    }]
     return (
       <div>
         <ReactEcharts 
           option={this.getOption()}/>
+        <Table columns={columns} dataSource={this.state.lists} size="small" />
       </div>
     );
   }
