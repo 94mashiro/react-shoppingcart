@@ -30,9 +30,9 @@ class AppInfo extends Component {
     const status = this.props.info.status
     let colorStyle = {}
     if (status === 1) {
-      colorStyle = {color: 'green'}
+      colorStyle = {color: '#7BA23F'}
     } else if (status === 2) {
-      colorStyle = {color: 'red'}
+      colorStyle = {color: '#D0104C'}
     }
     return (
       <div style={{flex:'1', flexGrow:0, margin:'10px 25px', flexBasis: '100px'}}>
