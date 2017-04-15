@@ -18,6 +18,6 @@
 
 ## Screenshot
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1fen4xw8sekj31kw10tajw.jpg)
+![](http://ww4.sinaimg.cn/large/006tNc79gy1fen54jtvgyj31kw10taio.jpg)
 ![](http://ww1.sinaimg.cn/large/006tNc79gy1fen4xzjcdcj31kw10taet.jpg)
 
